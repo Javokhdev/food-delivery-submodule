@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package productordering;
+
+service ProductService {
+  rpc GetProducts(ProductQuery) returns (ProductListResponse);
+  rpc GetProductById(ProductIdRequest) returns (ProductResponse);
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+  rpc UpdateProduct(UpdateProductRequest) returns (Response);
+  rpc DeleteProduct(ProductIdRequest) returns (DeleteResponse);
+//   oredering
+  rpc AddToCart(AddToCartRequest) returns (CartResponse);
+  rpc Checkout(CheckoutRequest) returns (OrderResponse);
+  rpc GetOrder(OrderIdRequest) returns (OrderResponse);
+  rpc GetOrdersByUser(UserIdRequest) returns (OrderListResponse);
+  rpc CancelOrder(OrderIdRequest) returns (OrderResponse);
+}
+
+message Response {
+  string message = 1;
+  bool success = 2; 
+}
+
+message ProductQuery {
+  int32 page = 1;
+  int32 limit = 2;
+  string category = 3; 
+  string sort_by = 4;
+}
+
+message ProductIdRequest {
+  string product_id = 1;
+}
+
+message CreateProductRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+}
+
+message UpdateProductRequest {
+  string product_id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+}
+
+message ProductResponse {
+  Product product = 1;
+}
+
+message ProductListResponse {
+  repeated Product products = 1;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message DeleteResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+// Cart messages
+message AddToCartRequest {
+  string user_id = 1;
+  string product_id = 2;
+  int32 quantity = 3;
+  string options = 4;
+}
+
+message CartResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+// Order messages
+message CheckoutRequest {
+  string user_id = 1;
+  string payment_method = 2; // Example: credit card, PayPal
+}
+
+message OrderIdRequest {
+  string order_id = 1;
+}
+
+message UserIdRequest {
+  string user_id = 1;
+}
+
+message OrderResponse {
+  Order order = 1;
+  string error = 2; 
+}
+
+message OrderListResponse {
+  repeated Order orders = 1;
+  string error = 2; 
+}
+
+message Order {
+  string id = 1;
+  string user_id = 2;
+  double total_amount = 3;
+  string status = 4; // Example: pending, preparing, delivered
+  string courier_id = 5;
+  string delivery_address = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message CreateProductResponse {
+  string product_id = 1;
+  string message = 2;
+}

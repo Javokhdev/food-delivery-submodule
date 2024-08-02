@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package notificationsalerts;
+
+// Notification Service
+service NotificationService {
+  rpc SendOrderConfirmation(OrderConfirmationRequest) returns (NotificationResponse);
+  rpc SendOrderStatusUpdate(OrderStatusUpdateRequest) returns (NotificationResponse);
+  rpc NotifyNewOrder(NewOrderNotificationRequest) returns (NotificationResponse);
+  rpc NotifyOrderAssignment(OrderAssignmentNotificationRequest) returns (NotificationResponse);
+  rpc AdminNewOrder(AdminOrderNotificationRequest) returns (NotificationResponse);
+  rpc AdminOrderStatusChange(AdminOrderStatusChangeRequest) returns (NotificationResponse);
+}
+
+// Notification messages
+message OrderConfirmationRequest {
+  string user_id = 1;
+  string order_id = 2;
+}
+
+message OrderStatusUpdateRequest {
+  string user_id = 1;
+  string order_id = 2;
+  string status = 3;
+}
+
+message NewOrderNotificationRequest {
+  string courier_id = 1;
+  string order_id = 2;
+}
+
+message OrderAssignmentNotificationRequest {
+  string courier_id = 1;
+  string order_id = 2;
+}
+
+message AdminOrderNotificationRequest {
+  string order_id = 1;
+}
+
+message AdminOrderStatusChangeRequest {
+  string order_id = 1;
+  string status = 2;
+}
+
+message NotificationResponse {
+  string message = 1;
+  string error = 2; // Error message if any
+}
